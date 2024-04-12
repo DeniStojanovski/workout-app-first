@@ -1,17 +1,28 @@
 <template>
   <div>
+    <base-dialog :show="!!error" title="An error occured!" @close="handleError">
+      <p>{{ error }}</p>
+    </base-dialog>
     <section>
       <supplement-filter @change-filter="setFilters"></supplement-filter>
     </section>
     <section>
       <base-card>
         <div class="controls">
-          <base-button mode="outline" @click="loadSupplements">Refresh</base-button>
-          <base-button v-if="!isSupplement" link to="/order/supplement"
+          <base-button mode="outline" @click="loadSupplements"
+            >Refresh</base-button
+          >
+          <base-button
+            v-if="!isSupplement && !isLoading"
+            link
+            to="/order/supplement"
             >Sell a supplement</base-button
           >
         </div>
-        <ul v-if="hasSupplements">
+        <div v-if="isLoading">
+          <base-spinner></base-spinner>
+        </div>
+        <ul v-else-if="hasSupplements">
           <supplement-item
             v-for="supplement in filteredSupplements"
             :key="supplement.id"
@@ -39,6 +50,8 @@ export default {
   },
   data() {
     return {
+      isLoading: false,
+      error: null,
       activeFilters: {
         protein: true,
         creatine: true,
@@ -78,7 +91,9 @@ export default {
       });
     },
     hasSupplements() {
-      return this.$store.getters['supplements/hasSupplements'];
+      return (
+        !this.isLoading && this.$store.getters['supplements/hasSupplements']
+      );
     },
   },
   created() {
@@ -88,9 +103,18 @@ export default {
     setFilters(updatedFilters) {
       this.activeFilters = updatedFilters;
     },
-    loadSupplements() {
-      this.$store.dispatch('supplements/loadSupplements')
-    }
+    async loadSupplements() {
+      this.isLoading = true;
+      try {
+        await this.$store.dispatch('supplements/loadSupplements');
+      } catch (error) {
+        this.error = error.message || 'Something went wrong!';
+      }
+      this.isLoading = false;
+    },
+    handleError() {
+      this.error = null;
+    },
   },
 };
 </script>

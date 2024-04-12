@@ -1,17 +1,28 @@
 <template>
   <div>
+    <base-dialog :show="!!error" title="An error occured!" @close="handleError">
+      <p>{{ error }}</p>
+    </base-dialog>
     <section>
       <workout-filter @change-filter="setFilters"></workout-filter>
     </section>
     <section>
       <base-card>
         <div class="controls">
-          <base-button mode="outline" @click="loadWorkouts">Refresh</base-button>
-          <base-button v-if="!isWorkout" link to="/register/workout"
+          <base-button mode="outline" @click="loadWorkouts"
+            >Refresh</base-button
+          >
+          <base-button
+            v-if="!isWorkout && !isLoading"
+            link
+            to="/register/workout"
             >Add a workout</base-button
           >
         </div>
-        <ul v-if="hasWorkouts">
+        <div v-if="isLoading">
+          <base-spinner></base-spinner>
+        </div>
+        <ul v-else-if="hasWorkouts">
           <workout-item
             v-for="workout in filteredWorkouts"
             :key="workout.id"
@@ -37,6 +48,8 @@ export default {
   },
   data() {
     return {
+      isLoading: true,
+      error: null,
       activeFilters: {
         back: true,
         chest: true,
@@ -67,7 +80,7 @@ export default {
       });
     },
     hasWorkouts() {
-      return this.$store.getters['workouts/hasWorkouts']
+      return !this.isLoading && this.$store.getters['workouts/hasWorkouts'];
     },
   },
   created() {
@@ -77,9 +90,18 @@ export default {
     setFilters(updatedFilters) {
       this.activeFilters = updatedFilters;
     },
-    loadWorkouts() {
-      this.$store.dispatch('workouts/loadWorkouts')
-    }
+    async loadWorkouts() {
+      this.isLoading = true;
+      try {
+        await this.$store.dispatch('workouts/loadWorkouts');
+      } catch (error) {
+        this.error = error.message || 'Something went wrong!';
+      }
+      this.isLoading = false;
+    },
+    handleError() {
+      this.error = null;
+    },
   },
 };
 </script>

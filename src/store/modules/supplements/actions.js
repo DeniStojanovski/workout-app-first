@@ -9,10 +9,13 @@ export default {
       areas: data.areas,
     };
 
-    const response = await fetch(`https://workout-app-first-1d90f-default-rtdb.europe-west1.firebasedatabase.app/supplements/${supId}.json`, {
-      method: 'PUT',
-      body: JSON.stringify(supplementData)
-    });
+    const response = await fetch(
+      `https://workout-app-first-1d90f-default-rtdb.europe-west1.firebasedatabase.app/supplements/${supId}.json`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(supplementData),
+      }
+    );
 
     // const responseData = await response.json();
 
@@ -27,28 +30,30 @@ export default {
   },
 
   async loadSupplements(context) {
-    const response = await fetch(`https://workout-app-first-1d90f-default-rtdb.europe-west1.firebasedatabase.app/supplements.json`)
-  
-  const responseData = await response.json()
+    const response = await fetch(
+      `https://workout-app-first-1d90f-default-rtdb.europe-west1.firebasedatabase.app/supplements.json`
+    );
 
-  if (!response.ok) {
-    // error ...s
-  }
+    const responseData = await response.json();
 
-  const supplements = [];
+    if (!response.ok) {
+      const error = new Error(responseData.message || 'Failed to fetch!');
+      throw error;
+    }
 
-  for (const key in responseData) {
-    const supplement = {
-      id: key,
-      name: responseData[key].name,
-      description: responseData[key].description,
-      rate: responseData[key].rate,
-      areas: responseData[key].areas,
-    };
-    supplements.push(supplement);
-  }
+    const supplements = [];
 
-  context.commit('setSupplements', supplements);
-}
+    for (const key in responseData) {
+      const supplement = {
+        id: key,
+        name: responseData[key].name,
+        description: responseData[key].description,
+        rate: responseData[key].rate,
+        areas: responseData[key].areas,
+      };
+      supplements.push(supplement);
+    }
 
+    context.commit('setSupplements', supplements);
+  },
 };

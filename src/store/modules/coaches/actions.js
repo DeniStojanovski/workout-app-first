@@ -10,10 +10,13 @@ export default {
       areas: data.areas,
     };
 
-    const response = await fetch(`https://workout-app-first-1d90f-default-rtdb.europe-west1.firebasedatabase.app/coaches/${userId}.json`, {
-      method: 'PUT',
-      body: JSON.stringify(coachData)
-    });
+    const response = await fetch(
+      `https://workout-app-first-1d90f-default-rtdb.europe-west1.firebasedatabase.app/coaches/${userId}.json`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(coachData),
+      }
+    );
 
     // const responseData = await response.json();
 
@@ -23,33 +26,36 @@ export default {
 
     context.commit('registerCoach', {
       ...coachData,
-      id: userId
+      id: userId,
     });
   },
 
   async loadCoaches(context) {
-    const response = await fetch(`https://workout-app-first-1d90f-default-rtdb.europe-west1.firebasedatabase.app/coaches.json`)
-  
-  const responseData = await response.json()
+    const response = await fetch(
+      `https://workout-app-first-1d90f-default-rtdb.europe-west1.firebasedatabase.app/coaches.json`
+    );
 
-  if (!response.ok) {
-    // error ...
-  }
+    const responseData = await response.json();
 
-  const coaches = [];
+    if (!response.ok) {
+      const error = new Error(responseData.message || 'Failed to fetch!');
+      throw error;
+    }
 
-  for (const key in responseData) {
-    const coach = {
-      id: key,
-      firstName: responseData[key].firstName,
-      lastName: responseData[key].lastName,
-      description: responseData[key].description,
-      hourlyRate: responseData[key].hourlyRate,
-      areas: responseData[key].areas,
-    };
-    coaches.push(coach);
-  }
+    const coaches = [];
 
-  context.commit('setCoaches', coaches);
-}
-}
+    for (const key in responseData) {
+      const coach = {
+        id: key,
+        firstName: responseData[key].firstName,
+        lastName: responseData[key].lastName,
+        description: responseData[key].description,
+        hourlyRate: responseData[key].hourlyRate,
+        areas: responseData[key].areas,
+      };
+      coaches.push(coach);
+    }
+
+    context.commit('setCoaches', coaches);
+  },
+};
