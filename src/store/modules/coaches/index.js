@@ -7,6 +7,7 @@ export default {
   state() {
     return {
       // userIsCoach: false,
+      lastCoachFetch: null,
       coaches: [
         {
           id: 'c1',

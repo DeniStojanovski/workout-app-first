@@ -9,7 +9,7 @@
     <section>
       <base-card>
         <div class="controls">
-          <base-button mode="outline" @click="loadSupplements"
+          <base-button mode="outline" @click="loadSupplements(true)"
             >Refresh</base-button
           >
           <base-button
@@ -103,10 +103,12 @@ export default {
     setFilters(updatedFilters) {
       this.activeFilters = updatedFilters;
     },
-    async loadSupplements() {
+    async loadSupplements(refresh = false) {
       this.isLoading = true;
       try {
-        await this.$store.dispatch('supplements/loadSupplements');
+        await this.$store.dispatch('supplements/loadSupplements', {
+          forceRefresh: refresh,
+        });
       } catch (error) {
         this.error = error.message || 'Something went wrong!';
       }

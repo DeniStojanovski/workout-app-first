@@ -9,7 +9,7 @@
     <section>
       <base-card>
         <div class="controls">
-          <base-button mode="outline" @click="loadWorkouts"
+          <base-button mode="outline" @click="loadWorkouts(true)"
             >Refresh</base-button
           >
           <base-button
@@ -90,10 +90,12 @@ export default {
     setFilters(updatedFilters) {
       this.activeFilters = updatedFilters;
     },
-    async loadWorkouts() {
+    async loadWorkouts(refresh = false) {
       this.isLoading = true;
       try {
-        await this.$store.dispatch('workouts/loadWorkouts');
+        await this.$store.dispatch('workouts/loadWorkouts', {
+          forceRefresh: refresh,
+        });
       } catch (error) {
         this.error = error.message || 'Something went wrong!';
       }

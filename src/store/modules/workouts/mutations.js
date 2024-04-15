@@ -5,4 +5,7 @@ export default {
   setWorkouts(state, payload) {
     state.workouts = payload;
   },
+  setWorkoutTimestamp(state) {
+    state.lastWorkoutFetch = new Date().getTime();
+  },
 };

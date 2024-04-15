@@ -30,7 +30,11 @@ export default {
     });
   },
 
-  async loadCoaches(context) {
+  async loadCoaches(context, payload) {
+    if (!payload.forceRefresh && !context.getters.shouldCoachUpdate) {
+      return;
+    }
+
     const response = await fetch(
       `https://workout-app-first-1d90f-default-rtdb.europe-west1.firebasedatabase.app/coaches.json`
     );
@@ -57,5 +61,6 @@ export default {
     }
 
     context.commit('setCoaches', coaches);
+    context.commit('setCoachTimestamp');
   },
 };

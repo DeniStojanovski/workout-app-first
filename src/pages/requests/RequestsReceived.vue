@@ -1,52 +1,56 @@
 <template>
-  <base-dialog :show="!!error" title="An error occured!" @close="handleError">
-    <p>{{ error }}</p>
-  </base-dialog>
-  <section>
-    <header>
-      <h2>RECEIVED REQUESTS</h2>
-    </header>
-    <base-card>
-      <h3>Coach Requests</h3>
-      <base-spinner v-if="isLoading"></base-spinner>
-      <ul v-else-if="hasCoachRequests && !isLoading">
-        <coach-request
-          v-for="req in receivedCoachRequests"
-          :key="req.coachId"
-          :email="req.userEmail"
-          :message="req.message"
-        >
-        </coach-request>
-      </ul>
-      <h3 v-else>You haven't received any Coach requests yet!</h3>
-    </base-card>
-    <base-card>
-      <h3>Workout Requests</h3>
-      <ul v-if="hasWorkoutRequests">
-        <supplement-request
-          v-for="req in receivedWorkoutRequests"
-          :key="req.workoutId"
-          :email="req.userEmail"
-          :message="req.message"
-        >
-        </supplement-request>
-      </ul>
-      <h3 v-else>You haven't received any Workout requests yet!</h3>
-    </base-card>
-    <base-card>
-      <h3>Supplement Requests</h3>
-      <ul v-if="hasSupplementRequests">
-        <workout-request
-          v-for="req in receivedSupplementRequests"
-          :key="req.supId"
-          :email="req.userEmail"
-          :message="req.message"
-        >
-        </workout-request>
-      </ul>
-      <h3 v-else>You haven't received any Supplement requests yet!</h3>
-    </base-card>
-  </section>
+  <div>
+    <base-dialog :show="!!error" title="An error occured!" @close="handleError">
+      <p>{{ error }}</p>
+    </base-dialog>
+    <section>
+      <header>
+        <h2>RECEIVED REQUESTS</h2>
+      </header>
+      <base-card>
+        <h3>Coach Requests</h3>
+        <base-spinner v-if="isLoading"></base-spinner>
+        <ul v-else-if="hasCoachRequests && !isLoading">
+          <coach-request
+            v-for="req in receivedCoachRequests"
+            :key="req.coachId"
+            :email="req.userEmail"
+            :message="req.message"
+          >
+          </coach-request>
+        </ul>
+        <h3 v-else>You haven't received any Coach requests yet!</h3>
+      </base-card>
+      <base-card>
+        <h3>Workout Requests</h3>
+        <base-spinner v-if="isLoading"></base-spinner>
+        <ul v-if="hasWorkoutRequests && !isLoading">
+          <supplement-request
+            v-for="req in receivedWorkoutRequests"
+            :key="req.workoutId"
+            :email="req.userEmail"
+            :message="req.message"
+          >
+          </supplement-request>
+        </ul>
+        <h3 v-else>You haven't received any Workout requests yet!</h3>
+      </base-card>
+      <base-card>
+        <h3>Supplement Requests</h3>
+        <base-spinner v-if="isLoading"></base-spinner>
+        <ul v-if="hasSupplementRequests && !isLoading">
+          <workout-request
+            v-for="req in receivedSupplementRequests"
+            :key="req.supId"
+            :email="req.userEmail"
+            :message="req.message"
+          >
+          </workout-request>
+        </ul>
+        <h3 v-else>You haven't received any Supplement requests yet!</h3>
+      </base-card>
+    </section>
+  </div>
 </template>
 
 <script>
@@ -94,12 +98,32 @@ export default {
   },
   created() {
     this.loadCoachRequests();
+    this.loadSupplementRequests();
+    this.loadWorkoutRequests();
   },
   methods: {
     async loadCoachRequests() {
       this.isLoading = true;
       try {
         await this.$store.dispatch('requests/fetchCoachRequests');
+      } catch (error) {
+        this.error = error.message || 'Something went wrong!';
+      }
+      this.isLoading = false;
+    },
+    async loadSupplementRequests() {
+      this.isLoading = true;
+      try {
+        await this.$store.dispatch('requests/fetchSupplementRequests');
+      } catch (error) {
+        this.error = error.message || 'Something went wrong!';
+      }
+      this.isLoading = false;
+    },
+    async loadWorkoutRequests() {
+      this.isLoading = true;
+      try {
+        await this.$store.dispatch('requests/fetchWorkoutRequests');
       } catch (error) {
         this.error = error.message || 'Something went wrong!';
       }

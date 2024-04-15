@@ -10,4 +10,12 @@ export default {
     const userId = rootGetters.userId;
     return coaches.some(coach => coach.id === userId);
   },
+  shouldCoachUpdate(state) {
+    const lastCoachFetch = state.lastCoachFetch;
+    if (!lastCoachFetch) {
+      return true;
+    }
+    const currentCoachTimestamp = new Date().getTime();
+    return (currentCoachTimestamp - lastCoachFetch) / 1000 > 60;
+  },
 };

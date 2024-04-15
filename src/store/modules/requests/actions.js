@@ -61,7 +61,7 @@ export default {
       message: payload.message,
     };
     const response = await fetch(
-      `https://workout-app-first-1d90f-default-rtdb.europe-west1.firebasedatabase.app/requests/supplements/${payload.supId}.json`,
+      `https://workout-app-first-1d90f-default-rtdb.europe-west1.firebasedatabase.app/requests/supplements/${payload.supplementId}.json`,
       {
         method: 'POST',
         body: JSON.stringify(newRequest),
@@ -76,15 +76,15 @@ export default {
     }
 
     newRequest.id = responseData.name;
-    newRequest.id = payload.supId;
+    newRequest.id = payload.supplementId;
 
     context.commit('addSupplementRequest', newRequest);
   },
 
   async fetchSupplementRequests(context) {
-    const supId = context.rootGetters.supplementId;
+    const supplementId = context.rootGetters.supId;
     const response = await fetch(
-      `https://workout-app-first-1d90f-default-rtdb.europe-west1.firebasedatabase.app/requests/supplements/${supId}.json`
+      `https://workout-app-first-1d90f-default-rtdb.europe-west1.firebasedatabase.app/requests/supplements/${supplementId}.json`
     );
     const responseData = await response.json();
 
@@ -98,7 +98,7 @@ export default {
     for (const key in responseData) {
       const request = {
         id: key,
-        supId: supId,
+        supplementId: supplementId,
         userEmail: responseData[key].userEmail,
         message: responseData[key].message,
       };
@@ -115,7 +115,7 @@ export default {
       message: payload.message,
     };
     const response = await fetch(
-      `https://workout-app-first-1d90f-default-rtdb.europe-west1.firebasedatabase.app/requests/workouts/${payload.workoutId}.json`,
+      `https://workout-app-first-1d90f-default-rtdb.europe-west1.firebasedatabase.app/requests/workouts/${payload.workId}.json`,
       {
         method: 'POST',
         body: JSON.stringify(newRequest),
@@ -130,15 +130,15 @@ export default {
     }
 
     newRequest.id = responseData.name;
-    newRequest.id = payload.workoutId;
+    newRequest.id = payload.workId;
 
     context.commit('addWorkoutRequest', newRequest);
   },
 
   async fetchWorkoutRequests(context) {
-    const workoutId = context.rootGetters.workId;
+    const workId = context.rootGetters.workoutId;
     const response = await fetch(
-      `https://workout-app-first-1d90f-default-rtdb.europe-west1.firebasedatabase.app/requests/workouts/${workoutId}.json`
+      `https://workout-app-first-1d90f-default-rtdb.europe-west1.firebasedatabase.app/requests/workouts/${workId}.json`
     );
     const responseData = await response.json();
 
@@ -152,7 +152,7 @@ export default {
     for (const key in responseData) {
       const request = {
         id: key,
-        workoutId: workoutId,
+        workId: workId,
         userEmail: responseData[key].userEmail,
         message: responseData[key].message,
       };

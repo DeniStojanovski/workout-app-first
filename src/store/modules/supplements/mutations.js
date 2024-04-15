@@ -5,4 +5,7 @@ export default {
   setSupplements(state, payload) {
     state.supplements = payload;
   },
+  setSupplementTimestamp(state) {
+    state.lastSupplementFetch = new Date().getTime();
+  },
 };

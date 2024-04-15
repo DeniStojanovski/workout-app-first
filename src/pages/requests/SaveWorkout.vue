@@ -1,48 +1,49 @@
 <template>
-    <form @submit.prevent="submitForm">
-        <div class="form-control">
-            <label for="email">Your E-mail</label>
-            <input type="email" id="email" v-model.trim="email">
-        </div>
-        <div class="form-control">
-            <label for="message">Message</label>
-            <textarea id="message" rows="5" v-model.trim="message"></textarea>
-        </div>
-        <p class="errors" v-if="!formIsValid">Please enter correctly.</p>
-        <div class="actions">
-            <base-button>Save Workout</base-button>
-        </div>
-    </form>
+  <form @submit.prevent="submitForm">
+    <div class="form-control">
+      <label for="email">Your E-mail</label>
+      <input type="email" id="email" v-model.trim="email" />
+    </div>
+    <div class="form-control">
+      <label for="message">Message</label>
+      <textarea id="message" rows="5" v-model.trim="message"></textarea>
+    </div>
+    <p class="errors" v-if="!formIsValid">Please enter correctly.</p>
+    <div class="actions">
+      <base-button>Save Workout</base-button>
+    </div>
+  </form>
 </template>
 
 <script>
 export default {
-    data() {
-        return {
-            email: '',
-            message: '',
-            formIsValid: true,
-        }
+  data() {
+    return {
+      email: '',
+      message: '',
+      formIsValid: true,
+    };
+  },
+  methods: {
+    submitForm() {
+      this.formIsValid = true;
+      if (
+        this.email === '' ||
+        !this.email.includes('@') ||
+        this.message === ''
+      ) {
+        this.formIsValid = false;
+        return;
+      }
+      this.$store.dispatch('requests/saveWorkout', {
+        email: this.email,
+        message: this.message,
+        workId: this.$route.params.id,
+      });
+      this.$router.replace('/workouts');
     },
-    methods: {
-        submitForm() {
-            this.formIsValid = true;
-            if (this.email === '' || 
-            !this.email.includes('@') || 
-            this.message === '') {
-                this.formIsValid = false;
-                return;
-            }
-            this.$store.dispatch('requests/saveWorkout', {
-              email: this.email,
-              message: this.message,
-              workId: this.$route.params.id,
-            });
-            this.$router.replace('/workouts')
-        }
-    }
-}
-
+  },
+};
 </script>
 
 <style scoped>
@@ -74,7 +75,7 @@ textarea {
 
 input:focus,
 textarea:focus {
-  border-color: #3d008d;
+  border-color: #00348d;
   background-color: #faf6ff;
   outline: none;
 }

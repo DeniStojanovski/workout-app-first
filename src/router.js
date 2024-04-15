@@ -13,6 +13,7 @@ import SupplementOrder from './pages/supplements/SupplementOrder.vue';
 import WorkoutDetail from './pages/workouts/WorkoutDetail.vue';
 import WorkoutRegistration from './pages/workouts/WorkoutRegistration.vue';
 import WorkoutList from './pages/workouts/WorkoutList.vue';
+import UserAuth from './pages/auth/UserAuth.vue';
 import NotFound from './pages/NotFound.vue';
 
 const router = createRouter({
@@ -52,6 +53,7 @@ const router = createRouter({
         { path: 'supplements', component: OrderSupplement },
       ],
     },
+    { path: '/auth', component: UserAuth },
     { path: '/:notFound(.*)', component: NotFound },
   ],
 });

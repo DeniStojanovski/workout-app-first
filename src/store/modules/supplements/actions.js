@@ -29,7 +29,11 @@ export default {
     });
   },
 
-  async loadSupplements(context) {
+  async loadSupplements(context, payload) {
+    if (!payload.forceRefresh && !context.getters.shouldSupplementUpdate) {
+      return;
+    }
+
     const response = await fetch(
       `https://workout-app-first-1d90f-default-rtdb.europe-west1.firebasedatabase.app/supplements.json`
     );
@@ -55,5 +59,6 @@ export default {
     }
 
     context.commit('setSupplements', supplements);
+    context.commit('setSupplementTimestamp');
   },
 };

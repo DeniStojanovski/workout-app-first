@@ -10,4 +10,12 @@ export default {
     const workoutId = rootGetters.workoutId;
     return workouts.some(workout => workout.id === workoutId);
   },
+  shouldWorkoutUpdate(state) {
+    const lastWorkoutFetch = state.lastWorkoutFetch;
+    if (!lastWorkoutFetch) {
+      return true;
+    }
+    const currentWorkoutTimestamp = new Date().getTime();
+    return (currentWorkoutTimestamp - lastWorkoutFetch) / 1000 > 60;
+  },
 };
