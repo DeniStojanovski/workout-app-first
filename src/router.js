@@ -15,6 +15,7 @@ import WorkoutRegistration from './pages/workouts/WorkoutRegistration.vue';
 import WorkoutList from './pages/workouts/WorkoutList.vue';
 import UserAuth from './pages/auth/UserAuth.vue';
 import NotFound from './pages/NotFound.vue';
+import store from './store/index.js';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -27,7 +28,11 @@ const router = createRouter({
       props: true,
       children: [{ path: 'save', component: SaveWorkout }],
     },
-    { path: '/register/workout', component: WorkoutRegistration },
+    {
+      path: '/register/workout',
+      component: WorkoutRegistration,
+      meta: { requiresAuth: true },
+    },
     { path: '/coaches', component: CoachList },
     {
       path: '/coaches/:id',
@@ -35,7 +40,11 @@ const router = createRouter({
       props: true,
       children: [{ path: 'contact', component: ContactCoach }],
     },
-    { path: '/register/coach', component: CoachRegistration },
+    {
+      path: '/register/coach',
+      component: CoachRegistration,
+      meta: { requiresAuth: true },
+    },
     { path: '/supplements', component: SupplementList },
     {
       path: '/supplements/:id',
@@ -43,19 +52,34 @@ const router = createRouter({
       props: true,
       children: [{ path: 'order', component: OrderSupplement }],
     },
-    { path: '/order/supplement', component: SupplementOrder },
+    {
+      path: '/order/supplement',
+      component: SupplementOrder,
+      meta: { requiresAuth: true },
+    },
     {
       path: '/requests',
       component: RequestsReceived,
+      meta: { requiresAuth: true },
       children: [
         { path: 'workouts', component: SaveWorkout },
         { path: 'coaches', component: ContactCoach },
         { path: 'supplements', component: OrderSupplement },
       ],
     },
-    { path: '/auth', component: UserAuth },
+    { path: '/auth', component: UserAuth, meta: { requiresUnauth: true } },
     { path: '/:notFound(.*)', component: NotFound },
   ],
+});
+
+router.beforeEach(function (to, _, next) {
+  if (to.meta.requiresAuth && !store.getters.isAuthenticated) {
+    next('/auth');
+  } else if (to.meta.requiresUnauth && store.getters.isAuthenticated) {
+    next('/home');
+  } else {
+    next();
+  }
 });
 
 export default router;

@@ -6,10 +6,13 @@ export default {
   state() {
     return {
       userId: null,
+      supId: null,
+      workoutId: null,
       token: null,
-      tokenExpiration: null,
-      supId: 'c8',
-      workoutId: 'c9',
+      // tokenExpiration: null,
+      // supId: 'c8',
+      // workoutId: 'c9',
+      didAutoLogout: false,
     };
   },
   mutations,

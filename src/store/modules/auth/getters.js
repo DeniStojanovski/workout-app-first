@@ -8,4 +8,13 @@ export default {
   workoutId(state) {
     return state.workoutId;
   },
+  token(state) {
+    return state.token;
+  },
+  isAuthenticated(state) {
+    return !!state.token;
+  },
+  didAutoLogout(state) {
+    return state.didAutoLogout;
+  },
 };

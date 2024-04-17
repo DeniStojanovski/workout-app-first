@@ -9,8 +9,11 @@ export default {
       areas: data.areas,
     };
 
+    const token = context.rootGetters.token;
+
     const response = await fetch(
-      `https://workout-app-first-1d90f-default-rtdb.europe-west1.firebasedatabase.app/supplements/${supId}.json`,
+      `https://workout-app-first-1d90f-default-rtdb.europe-west1.firebasedatabase.app/supplements/${supId}.json?auth=` +
+        token,
       {
         method: 'PUT',
         body: JSON.stringify(supplementData),

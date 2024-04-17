@@ -29,8 +29,10 @@ export default {
 
   async fetchCoachRequests(context) {
     const coachId = context.rootGetters.userId;
+    const token = context.rootGetters.token;
     const response = await fetch(
-      `https://workout-app-first-1d90f-default-rtdb.europe-west1.firebasedatabase.app/requests/coaches/${coachId}.json`
+      `https://workout-app-first-1d90f-default-rtdb.europe-west1.firebasedatabase.app/requests/coaches/${coachId}.json?auth=` +
+        token
     );
     const responseData = await response.json();
 
@@ -83,8 +85,10 @@ export default {
 
   async fetchSupplementRequests(context) {
     const supplementId = context.rootGetters.supId;
+    const token = context.rootGetters.token;
     const response = await fetch(
-      `https://workout-app-first-1d90f-default-rtdb.europe-west1.firebasedatabase.app/requests/supplements/${supplementId}.json`
+      `https://workout-app-first-1d90f-default-rtdb.europe-west1.firebasedatabase.app/requests/supplements/${supplementId}.json?auth=` +
+        token
     );
     const responseData = await response.json();
 
@@ -137,8 +141,10 @@ export default {
 
   async fetchWorkoutRequests(context) {
     const workId = context.rootGetters.workoutId;
+    const token = context.rootGetters.token;
     const response = await fetch(
-      `https://workout-app-first-1d90f-default-rtdb.europe-west1.firebasedatabase.app/requests/workouts/${workId}.json`
+      `https://workout-app-first-1d90f-default-rtdb.europe-west1.firebasedatabase.app/requests/workouts/${workId}.json?auth=` +
+        token
     );
     const responseData = await response.json();
 
