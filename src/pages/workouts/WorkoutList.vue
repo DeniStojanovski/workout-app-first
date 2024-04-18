@@ -12,8 +12,11 @@
           <base-button mode="outline" @click="loadWorkouts(true)"
             >Refresh</base-button
           >
+          <base-button link to="/auth?redirect=save/workout" v-if="!isLoggedIn">
+            Login to Add a workout
+          </base-button>
           <base-button
-            v-if="!isWorkout && !isLoading"
+            v-if="isLoggedIn && !isWorkout && !isLoading"
             link
             to="/register/workout"
             >Add a workout</base-button
@@ -58,9 +61,9 @@ export default {
     };
   },
   computed: {
-    // filteredWorkouts() {
-    //   return this.$store.getters['workouts/workouts'];
-    // },
+    isLoggedIn() {
+      return this.$store.getters.isAuthenticated;
+    },
     isWorkout() {
       return this.$store.getters['workouts/isWorkout'];
     },

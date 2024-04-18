@@ -9,15 +9,22 @@
     <section>
       <base-card>
         <div class="controls">
-          <base-button mode="outline" @click="loadSupplements(true)"
-            >Refresh</base-button
-          >
+          <base-button mode="outline" @click="loadSupplements(true)">
+            Refresh
+          </base-button>
           <base-button
-            v-if="!isSupplement && !isLoading"
+            link
+            to="/auth?redirect=order/supplement"
+            v-if="!isLoggedIn"
+          >
+            Login to Sell a supplement
+          </base-button>
+          <base-button
+            v-if="isLoggedIn && !isSupplement && !isLoading"
             link
             to="/order/supplement"
-            >Sell a supplement</base-button
-          >
+            >Sell a supplement
+          </base-button>
         </div>
         <div v-if="isLoading">
           <base-spinner></base-spinner>
@@ -60,9 +67,9 @@ export default {
     };
   },
   computed: {
-    // filteredSupplements() {
-    //   return this.$store.getters['supplements/supplements'];
-    // },
+    isLoggedIn() {
+      return this.$store.getters.isAuthenticated;
+    },
     isSupplement() {
       return this.$store.getters['supplements/isSupplement'];
     },

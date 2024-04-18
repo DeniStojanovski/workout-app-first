@@ -48,6 +48,8 @@ export default {
 
     localStorage.setItem('token', responseData.idToken);
     localStorage.setItem('userId', responseData.localId);
+    localStorage.setItem('supId', responseData.localId);
+    localStorage.setItem('workoutId', responseData.localId);
     localStorage.setItem('tokenExpiration', expirationDate);
 
     timer = setTimeout(function () {
@@ -57,6 +59,8 @@ export default {
     context.commit('setUser', {
       token: responseData.idToken,
       userId: responseData.localId,
+      supId: responseData.localId,
+      workoutId: responseData.localId,
       // tokenExpiration: expirationDate,
     });
   },
@@ -64,6 +68,8 @@ export default {
   tryLogin(context) {
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
+    const supId = localStorage.getItem('supId');
+    const workoutId = localStorage.getItem('workoutId');
     const tokenExpiration = localStorage.getItem('tokenExpiration');
 
     const expiresIn = +tokenExpiration - new Date().getTime();
@@ -80,6 +86,8 @@ export default {
       context.commit('setUser', {
         token: token,
         userId: userId,
+        supId: supId,
+        workoutId: workoutId,
         // tokenExpiration: null,
       });
     }
@@ -88,6 +96,8 @@ export default {
   logout(context) {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
+    localStorage.removeItem('supId');
+    localStorage.removeItem('workoutId');
     localStorage.removeItem('tokenExpiration');
 
     clearTimeout(timer);
