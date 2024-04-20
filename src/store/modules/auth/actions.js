@@ -59,7 +59,21 @@ export default {
     context.commit('setUser', {
       token: responseData.idToken,
       userId: responseData.localId,
+      // supId: responseData.localId,
+      // workoutId: responseData.localId,
+      // tokenExpiration: expirationDate,
+    });
+    context.commit('setSupplement', {
+      token: responseData.idToken,
+      // userId: responseData.localId,
       supId: responseData.localId,
+      // workoutId: responseData.localId,
+      // tokenExpiration: expirationDate,
+    });
+    context.commit('setWorkout', {
+      token: responseData.idToken,
+      // userId: responseData.localId,
+      // supId: responseData.localId,
       workoutId: responseData.localId,
       // tokenExpiration: expirationDate,
     });
@@ -86,7 +100,25 @@ export default {
       context.commit('setUser', {
         token: token,
         userId: userId,
+        // supId: supId,
+        // workoutId: workoutId,
+        // tokenExpiration: null,
+      });
+    }
+    if (token && supId) {
+      context.commit('setSupplement', {
+        token: token,
+        // userId: userId,
         supId: supId,
+        // workoutId: workoutId,
+        // tokenExpiration: null,
+      });
+    }
+    if (token && workoutId) {
+      context.commit('setWorkout', {
+        token: token,
+        // userId: userId,
+        // supId: supId,
         workoutId: workoutId,
         // tokenExpiration: null,
       });
@@ -105,7 +137,21 @@ export default {
     context.commit('setUser', {
       token: null,
       userId: null,
+      // supId: null,
+      // workoutId: null,
+      // tokenExpiration: null,
+    });
+    context.commit('setSupplement', {
+      token: null,
+      // userId: null,
       supId: null,
+      // workoutId: null,
+      // tokenExpiration: null,
+    });
+    context.commit('setWorkout', {
+      token: null,
+      // userId: null,
+      // supId: null,
       workoutId: null,
       // tokenExpiration: null,
     });
