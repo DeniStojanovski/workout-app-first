@@ -1,35 +1,40 @@
 <template>
-    <li>
-        <h3>{{ name }}</h3>
-        <h4>${{ rate }}</h4>
-        <div>
-            <base-badge v-for="area in areas" :key="area" :type="area" :title="area"></base-badge>
-        </div>
-        <div class="actions">
-            <base-button mode="outline" link :to="orderSupplementLink">Order</base-button>
-            <base-button link :to="supplementDetailsLink">View Details</base-button>
-        </div>
-    </li>
+  <li>
+    <h3>{{ name }}</h3>
+    <h4>${{ rate }}</h4>
+    <div>
+      <base-badge
+        v-for="area in areas"
+        :key="area"
+        :type="area"
+        :title="area"
+      ></base-badge>
+    </div>
+    <div class="actions">
+      <base-button mode="outline" link :to="orderSupplementLink">
+        Order
+      </base-button>
+      <base-button link :to="supplementDetailsLink">View Details</base-button>
+    </div>
+  </li>
 </template>
 
 <script>
-
 export default {
-    props: ['id', 'name', 'rate', 'areas'],
-    computed: {
-        // fullName() {
-        //     return this.firstName + ' ' + this.lastName;
-        // },
-        orderSupplementLink() {
-            return this.$route.path + '/' + this.id + '/order';
-        },
-        supplementDetailsLink() {
-            return this.$route.path + '/' + this.id;
-        }
-    }
-}
+  props: ['id', 'name', 'rate', 'areas'],
+  computed: {
+    // fullName() {
+    //     return this.firstName + ' ' + this.lastName;
+    // },
+    orderSupplementLink() {
+      return this.$route.path + '/' + this.id + '/order';
+    },
+    supplementDetailsLink() {
+      return this.$route.path + '/' + this.id;
+    },
+  },
+};
 </script>
-
 
 <style scoped>
 li {

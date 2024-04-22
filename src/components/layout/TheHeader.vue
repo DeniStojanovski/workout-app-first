@@ -2,7 +2,7 @@
   <header>
     <nav>
       <h1>
-        <router-link to="/">WORKOUT APP</router-link>
+        <router-link to="/">Fitness Stealth</router-link>
       </h1>
       <ul>
         <li>
